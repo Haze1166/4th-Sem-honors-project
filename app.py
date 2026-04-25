@@ -31,6 +31,30 @@ def process_data():
         "data": data_store
     })
 
+@app.route('/test')
+def test_page():
+    return """
+    <h2>Send Data</h2>
+    <input id='name' placeholder='Name'>
+    <input id='msg' placeholder='Message'>
+    <button onclick='sendData()'>Send</button>
+
+    <script>
+    function sendData() {
+        fetch('/data', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                name: document.getElementById('name').value,
+                message: document.getElementById('msg').value
+            })
+        })
+        .then(res => res.json())
+        .then(data => alert(JSON.stringify(data)));
+    }
+    </script>
+    """
+    
 # Run server
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 5000)))
